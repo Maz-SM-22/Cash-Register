@@ -1,3 +1,4 @@
+import os 
 import json
 import math  
 from itertools import groupby
@@ -11,19 +12,23 @@ class Cart:
         self.products = self.get_products()
 
     def close(self): 
+        """Set the status of the cart to keep it open while completing purchases"""
         self.open = False 
 
     def get_products(self): 
-        with open('../products/products.json') as stock_file: 
+        """Load external file with listed items available for purchase in"""
+        project_root = os.getenv('PYTHONPATH')
+        with open(f'{project_root}/products/products.json') as stock_file: 
             stock = json.load(stock_file)
             return stock['products']
 
     def get_items(self):
+        """Converts individually listed items into list with all items, their price and quantity purchased"""
         items = []
-        for item in self.items: 
+        for item in sorted(self.items): 
             items.append(self.products[item])
         grouped = {}
-        for name, article in groupby(sorted(items), key=lambda item: item["name"]):
+        for name, article in groupby(items, key=lambda item: item["name"]):
             products = list(article)
             grouped[name] = {
                 "price": products[0]["price"],
@@ -32,6 +37,7 @@ class Cart:
         return grouped
 
     def calculate_total(self):
+        """Uses the previous function to apply discounts and calculate total"""
         self.items = self.get_items()
         if len(self.items) == 0: 
             return self.total 

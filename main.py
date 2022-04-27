@@ -2,6 +2,7 @@ from services.cart import Cart
 from services.display import Display
 
 def run_cash_register(cart=Cart([])): 
+    """A basic function which allows users to enter products and raises an error if the product is not found"""
     while cart.open: 
         item = input('Please enter an item code or enter "DONE" to finish shopping: ')
         if item == 'DONE': 
