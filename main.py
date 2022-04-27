@@ -1,17 +1,18 @@
 from services.cart import Cart
 from services.display import Display
 
-def run_cash_register(): 
-    cart = Cart([]) 
+def run_cash_register(cart=Cart([])): 
     while cart.open: 
         item = input('Please enter an item code or enter "DONE" to finish shopping: ')
         if item == 'DONE': 
-            cart.calculate_total()
+            purchases = cart.get_items()
+            cost = cart.calculate_total()
             cart.close()
         elif item not in cart.products: 
-            print('That item does not exist')
+            raise ValueError(f'Item {item} does not exist. Please check your order again')
         else: 
             cart.items.append(item)
-    return cart.total 
+    receipt = Display(purchases, cost)
+    return receipt.view_purchases()
 
 run_cash_register()

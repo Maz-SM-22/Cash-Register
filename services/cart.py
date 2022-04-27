@@ -49,6 +49,3 @@ class Cart:
                 else: 
                     self.total += self.items[item]['price'] * self.items[item]['quantity']
         return self.total
-
-cart = Cart(['SR1', 'SR1', 'SR1', 'GR1', 'CF1', 'GR1'])
-print(cart.calculate_total())

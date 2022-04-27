@@ -1,6 +1,7 @@
 import pytest
 import unittest
 from services.cart import Cart
+from main import run_cash_register
 
 class RegisterTest(unittest.TestCase): 
 
@@ -46,4 +47,5 @@ class RegisterTest(unittest.TestCase):
 
     def check_item_not_found_error(self): 
         """Check that when an item code is incorrectly entered an alert is raised"""
-        pass
+        with pytest.raises(ValueError, match='Item 4321 does not exist. Please check your order again'):  
+            run_cash_register(cart=Cart['4321'])
